@@ -26,6 +26,7 @@ function createOrder (products, userEmail) {
         total_price : totalPrice,
     });
     order.save();
+    return order;
 
 }
 
@@ -34,8 +35,8 @@ connect().then(()=> {
         const {products, userEmail} = JSON.parse(data.content.toString());
         console.log('consuming order queue');
         console.log(products, userEmail);
-        createOrder(products, userEmail);
-    }, {noAck: true});
+        const newOrder =  createOrder(products, userEmail);
+    });
 });
 
 mongoose.connect('mongodb://localhost/product-service', {
