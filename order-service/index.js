@@ -36,6 +36,8 @@ connect().then(()=> {
         console.log('consuming order queue');
         console.log(products, userEmail);
         const newOrder =  createOrder(products, userEmail);
+
+        //further process can be added like sending email/text to user through another service
     });
 });
 
