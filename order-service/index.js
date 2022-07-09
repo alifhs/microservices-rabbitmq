@@ -13,11 +13,28 @@ async function connect() {
         await channel.assertQueue('order');
 
 }
+
+function createOrder (products, userEmail) {
+
+    let totalPrice = 0;
+    products.forEach(product => {
+        totalPrice += product.price;
+    });
+    const order = new Order({
+        products,
+        userEmail,
+        total_price : totalPrice,
+    });
+    order.save();
+
+}
+
 connect().then(()=> {
     channel.consume('order', (data)=> {
         const {products, userEmail} = JSON.parse(data.content.toString());
         console.log('consuming order queue');
         console.log(products, userEmail);
+        createOrder(products, userEmail);
     }, {noAck: true});
 });
 
